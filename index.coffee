@@ -3,11 +3,14 @@ zappajs = require 'zappajs'
 
 module.exports = (config) ->
 
-  zappajs ->
+  service = config.service ? {}
+  service.disable_io = true
 
-    mediaproxy = new MediaProxy config
+  zappajs config.service, ->
 
-    @use 'bodyparser'
+    mediaproxy = new MediaProxy config.media
+
+    @use 'bodyParser'
 
     # The `body` is a hash of `{local,remote}` entries (remotes are optional) where
     # each of `local` or `remote` is `{address,port}`.
@@ -17,17 +20,19 @@ module.exports = (config) ->
     # This method also supports adding legs (e.g. starting only with a 'a' leg and
     # adding the 'b' leg at a later time).
 
-    @put '/proxy/:uuid': ->
-      if mediaproxy.add @req.param.uuid, @req.body
-        @json ok:true
-      else
-        @json error:'failed'
+    @put '/proxy/:uuid', ->
+      console.dir @req.body
+      @json mediaproxy.add @req.params.uuid, @req.body
 
     @get '/proxy/:uuid', ->
-      @json mediaproxy.by_uuid[@req.param.uuid]
+      @json mediaproxy.by_uuid[@req.params.uuid]
 
-    @delete '/proxy/:uuid': ->
-      if mediaproxy.remove @req.param.uuid
-        @json ok:true
-      else
-        @json error:'failed'
+    @delete '/proxy/:uuid', ->
+      @json if mediaproxy.remove @req.params.uuid
+
+    server = @server
+
+    @post '/proxy/shutdown', ->
+      server.close()
+      mediaproxy.close()
+      @json ok:true
