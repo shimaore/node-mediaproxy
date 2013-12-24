@@ -42,8 +42,8 @@ Create a first leg on a defined port on the loopback address.
           type('json').
           end (err,res) ->
             should.not.exist err
-            res.body.should.not.have.property 'error'
-            res.body.ok.should.be.true
+            res.body.should.have.property 'first_leg'
+            res.body.first_leg.should.not.have.property 'error'
             do next
 
 Start a UDP receiver on a random port.
@@ -85,8 +85,8 @@ Create a second leg on a defined port on the loopback address, with the remote s
           ).
           end (err,res) ->
             should.not.exist err
-            res.body.should.not.have.property 'error'
-            res.body.ok.should.be.true
+            res.body.should.have.property 'second_leg'
+            res.body.second_leg.should.not.have.property 'error'
             do next
 
 Start a UDP sender on a random port.

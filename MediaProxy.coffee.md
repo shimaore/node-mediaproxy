@@ -147,7 +147,20 @@ MediaProxy forwards UDP packets in both directions.
                 @remove uuid
             legs[name] = leg
         log "Add successful for uuid #{uuid}"
-        return ok:true
+
+      get: (uuid) ->
+        response = {}
+        legs = @by_uuid[uuid] ? {}
+        for name,_ of legs
+          response[name] =
+            error: _.error
+            remote:
+              address: _.remote?.address
+              port: _.remote?.port
+            local:
+              address: _.local?.address
+              port: _.local?.port
+        return response
 
       remove: (uuid) ->
         legs = @by_uuid[uuid]

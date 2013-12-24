@@ -21,11 +21,11 @@ module.exports = (config) ->
     # adding the 'b' leg at a later time).
 
     @put '/proxy/:uuid', ->
-      console.dir @req.body
-      @json mediaproxy.add @req.params.uuid, @req.body
+      mediaproxy.add @req.params.uuid, @req.body
+      @json mediaproxy.get @req.params.uuid
 
     @get '/proxy/:uuid', ->
-      @json mediaproxy.by_uuid[@req.params.uuid]
+      @json mediaproxy.get @req.params.uuid
 
     @delete '/proxy/:uuid', ->
       @json if mediaproxy.remove @req.params.uuid
