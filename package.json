@@ -4,6 +4,7 @@
   "description": "Node.js Media Proxy with REST API",
   "main": "index.js",
   "scripts": {
+    "prepublish": "coffee -c index.coffee MediaProxy.coffee.md",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Stéphane Alnet <stephane@shimaore.net> (http://shimaore.net/)",
@@ -19,5 +20,11 @@
   "bugs": {
     "url": "https://github.com/shimaore/node-mediaproxy/issues"
   },
-  "homepage": "https://github.com/shimaore/node-mediaproxy"
+  "homepage": "https://github.com/shimaore/node-mediaproxy",
+  "dependencies": {
+    "zappajs": "~0.4.22"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.6.3"
+  }
 }
