@@ -12,6 +12,10 @@ SingleMediaProxy forwards UDP packets in one direction.
         assert @local?, 'local is required'
         assert @local?.port?, 'local.port is required'
 
+        @sent = 0
+        @received = 0
+        @errors = 0
+
         @local.socket = dgram.createSocket 'udp4'
 
         @local.socket.on 'error', (err) =>
@@ -19,6 +23,7 @@ SingleMediaProxy forwards UDP packets in one direction.
           @emit 'error', err
 
         @local.socket.on 'message', (msg,rinfo) =>
+          @received += 1
           # log "Received message on port #{@local.port}"
           @remote ?= rinfo
           @emit 'message', msg, rinfo
@@ -58,7 +63,10 @@ Otherwise bind on all interfaces.
           # log "Sending message out to #{@remote.address}:#{@remote.port}"
           @local.socket.send buf, 0, buf.length, @remote.port, @remote.address, (err,bytes) =>
             if err?
+              @errors += 1
               log "Send failed with #{err}"
+            else
+              @sent += 1
         else
           log 'Not ready to send, still missing remote address or port'
         @renew_timeout()
@@ -160,6 +168,10 @@ MediaProxy forwards UDP packets in both directions.
             local:
               address: _.local?.address
               port: _.local?.port
+            sent: _.proxy?.sent
+            received: _.proxy?.received
+            errors: _.proxy?.errors
+
         return response
 
       remove: (uuid) ->

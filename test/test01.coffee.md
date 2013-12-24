@@ -106,6 +106,11 @@ Verify that trafic send by the sender is received by the receiver.
               counter += 1
               console.log "Sent #{counter} packets."
               if counter is expected_number_of_packets
+                request.get(id_url).end (err,res) ->
+                  should.not.exist err
+                  res.body.should.have.property 'first_leg'
+                  res.body.first_leg.should.have.property 'received'
+                  res.body.first_leg.received.should.equal expected_number_of_packets
                 sender.close()
                 do next
 
