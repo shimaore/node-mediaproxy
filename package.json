@@ -7,5 +7,17 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Stéphane Alnet <stephane@shimaore.net> (http://shimaore.net/)",
-  "license": "unlicense"
+  "license": "unlicense",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shimaore/node-mediaproxy.git"
+  },
+  "keywords": [
+    "mediaproxy",
+    "RTP"
+  ],
+  "bugs": {
+    "url": "https://github.com/shimaore/node-mediaproxy/issues"
+  },
+  "homepage": "https://github.com/shimaore/node-mediaproxy"
 }
