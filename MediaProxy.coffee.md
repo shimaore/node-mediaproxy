@@ -101,6 +101,7 @@ MediaProxy forwards UDP packets in both directions.
           log 'Could not allocate a local port.'
           leg.error = 'Could not allocate a local port.'
           return
+        delete leg.error
         leg.proxy = new SingleMediaProxy leg.local, leg.remote
         @by_port[leg.local.port] = leg
         log 'Allocate proxy successful'
@@ -144,7 +145,7 @@ MediaProxy forwards UDP packets in both directions.
                 log "Received timeout on uuid #{uuid} leg #{name}."
                 # Close the ports.
                 @remove uuid
-            @by_uuid[uuid][name] = leg
+            legs[name] = leg
         log "Add successful for uuid #{uuid}"
         return ok:true
 
